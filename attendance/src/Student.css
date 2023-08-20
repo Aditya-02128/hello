@@ -1,0 +1,71 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+.student-body {
+  height: 100vh;
+  width: 100vw;
+  background-image: url("https://img.freepik.com/free-vector/hand-drawn-back-school-background_23-2149464866.jpg?w=2000");
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
+}
+
+.form {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: rgba(46, 43, 43, 0.5);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.8);
+  height: 500px;
+  width: 350px;
+  z-index: 5;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: center;
+}
+
+.inputbox {
+  padding: 7px;
+  width: 240px;
+  border-radius: 9px;
+  border: 0;
+}
+.inputbox:focus {
+  outline: none;
+  border: 0;
+}
+.form:hover .gradient1 {
+  opacity: 0.4;
+}
+.gradient1 {
+  position: absolute;
+  background-image: linear-gradient(0deg, #f2e7e7, transparent);
+  height: 100%;
+  width: 100%;
+  opacity: 0;
+  transition: opacity 0.5s;
+  z-index: -1;
+}
+.overlay1 {
+  position: absolute;
+  height: 100vh;
+  width: 100vw;
+  background-color: rgba(0, 0, 0, 0.1);
+}
+.title1 {
+  color: white;
+  font-size: 33px;
+  text-align: center;
+}
+.usn1 {
+  display: flex;
+  color: white;
+  flex-direction: column;
+  gap: 13px;
+  text-align: center;
+  font-size: 25px;
+}

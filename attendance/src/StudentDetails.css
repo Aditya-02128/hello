@@ -1,0 +1,69 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+.student-details-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 20px;
+}
+
+body {
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-image: url("https://img.freepik.com/free-vector/hand-drawn-back-school-background_23-2149464866.jpg?w=2000");
+    background-position: center;
+    background-size: cover;
+    background-repeat: no-repeat;
+}
+
+.error {
+    color: red;
+}
+
+.student-table {
+    width: 80%;
+    border-collapse: collapse;
+    margin-top: 50px;
+    margin-bottom: 5%;
+}
+
+.student-table th,
+.student-table td {
+    padding: 15px;
+    border: 2px solid #ddd;
+}
+
+.student-table th {
+    background-color: #f2f2f2;
+    font-weight: bold;
+    font-size: 20px;
+    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+}
+
+.student-table td {
+    text-align: center;
+}
+
+.exit-button1 {
+    padding: 10px 20px;
+    background-color: red;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    position: absolute;
+    bottom: 250px;
+    font-size: 17px;
+    transition: background-color 0.3s ease;
+}
+
+.exit-button1:hover {
+    background-color: darkred;
+}
