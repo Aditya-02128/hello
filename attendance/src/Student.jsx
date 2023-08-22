@@ -2,6 +2,7 @@ import "./Student.css";
 import { useUsnContext } from "./UsnContext";
 import { Button } from "@mui/material";
 import { useNavigate } from "react-router-dom";
+
 export default function Student() {
   const { usn, setUsn } = useUsnContext();
   function home() {

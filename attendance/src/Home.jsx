@@ -7,37 +7,15 @@ import { db } from './config/firebase';
 
 export default function Home() {
   const navigate = useNavigate();
+  
   const handleStudentButtonClick = () => {
     navigate("/Student");
   };
+
   const handleTeacherButtonClick = () => {
     navigate("/Teacher");
-    
   };
 
-  const [studentDetails, setStudentDetails] = useState(null);
-
-  useEffect(() => {
-    const getStudentName = async () => {
-      const docRef = doc(db, "students", "1BY20CS101");
-
-      try {
-        const docSnap = await getDoc(docRef);
-        if (docSnap.exists()) {
-          console.log("DocSnap data: ", docSnap.data());
-          setStudentDetails(docSnap.data());
-           // Update state with student details
-        } else {
-          console.log("Document does not exist");
-          setStudentDetails(null); // Clear student details
-        }
-      } catch (error) {
-        console.log(error);
-      }
-    };
-    getStudentName();
-  },[]);
-  console.log(studentDetails);
   
   return (
     <div>
@@ -75,9 +53,6 @@ export default function Home() {
             </Button>
           </div>
         </form>
-        {studentDetails!==null?
-        (<p>{studentDetails["StudentName"]}</p>):
-        (<p>no data</p>)}
       </div>
     </div>
   );

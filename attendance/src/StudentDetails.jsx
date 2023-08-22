@@ -1,24 +1,23 @@
 import { useState, useEffect } from "react";
-import { useStudentDataContext } from "./StudentDataContext"; // Import the StudentDataContext
 import { useUsnContext } from "./UsnContext";
 import "./StudentDetails.css";
 import { useNavigate } from "react-router-dom";
-import { doc, getDoc } from 'firebase/firestore'; // Import Firestore functions as needed
+import { doc, getDoc } from 'firebase/firestore'; 
 import { db } from './config/firebase';
 
 export default function StudentDetails() {
+
   function home() {
     navigate("/");
   }
+
   const navigate = useNavigate();
   const { usn } = useUsnContext();
-  const { studentData } = useStudentDataContext(); // Use the studentData from context
-  const [studentInfo, setStudentInfo] = useState(null);
   const [studentDetails, setStudentDetails] = useState(null);
+
   useEffect(() => {
     const getStudentName = async () => {
       const docRef = doc(db, "students", usn);
-
       try {
         const docSnap = await getDoc(docRef);
         if (docSnap.exists()) {
@@ -37,27 +36,15 @@ export default function StudentDetails() {
     console.log(studentDetails);
   },[]);
 
-  useEffect(() => {
-    const findStudentByUSN = () => {
-      const student = studentData.find((student) => student.usn === usn); // Use studentData instead of dummyData
-      if (student) {
-        setStudentInfo(student);
-      } else {
-        setStudentInfo(null);
-      }
-    };
 
-    findStudentByUSN();
-  }, [usn, studentData]); // Include studentData in the dependency array
 console.log(studentDetails)
   return (
     <div className="student-details-container">
-      <h1>STUDENT DETAILS</h1>
-      <button className="exit-button1" onClick={home}>
-        Exit
-      </button>
+      
       {studentDetails!==null? (
+        
         <table className="student-table">
+          <caption><h1>STUDENT DETAILS {studentDetails.StudentName}</h1><br></br></caption>
           <thead>
             <tr>
               <th>USN</th>
@@ -83,9 +70,13 @@ console.log(studentDetails)
           ))}
           </tbody>
         </table>
+        
       ) : (
         <h1 className="error">No student found with the entered USN</h1>
       )}
+      <button className="exit-button1" onClick={home}>
+        Exit
+      </button>
     </div>
   );
 }

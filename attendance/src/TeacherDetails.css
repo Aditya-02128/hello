@@ -93,6 +93,7 @@
     left: -90%;
     padding-left: 11%;
     padding-right: 11%;
+    align-items: center;
 }
 
 #excel-table caption {
@@ -121,4 +122,21 @@
     font-weight: bold;
     font-family: 'Times New Roman', Times, serif;
     margin-top: -10px;
+}
+
+.finalize-button {
+    padding: 10px 20px;
+    background-color: rgb(20, 150, 244);
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 17px;
+    z-index: 3;
+    transition: background-color 0.3s ease;
+    display: flex;
+}
+
+.finalize-button:hover {
+    background-color: rgb(17, 86, 139);
 }

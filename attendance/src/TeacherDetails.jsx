@@ -5,15 +5,32 @@ import { read, utils } from "xlsx";
 import { useStudentDataContext } from "./StudentDataContext";
 import { useCourseIDContext } from "./CourseIDContext";
 import { useCourseNameContext } from "./CourseNameContext";
-import { doc, getDoc,collection, getDocs, getFirestore } from 'firebase/firestore'; // Import Firestore functions as needed
+import { doc, setDoc,collection, getDocs } from 'firebase/firestore';
 import { db } from './config/firebase';
 
 export default function TeacherDetails(props) {
   const navigate = useNavigate();
   const { studentData, setStudentData } = useStudentDataContext();
-  const {CourseName, setCourseName}=useCourseNameContext();
-  const {CourseID, setCourseID}=useCourseIDContext();
+  const {CourseName}=useCourseNameContext();
+  const {CourseID}=useCourseIDContext();
   const [studentDetails, setStudentDetails] = useState(null);
+  const [flag,setFlag]=useState(0);
+
+  function finalize(){
+    studentData.map((student)=>{
+        const setData=async()=>{
+              const docRef = doc(db,"students",student['USN']);
+              await setDoc(docRef, {"Marks":{ [CourseID] :{"IA1":student['IA1'],"IA2":student['IA2'],"IA3":student['IA3'],"courseName":CourseName,"Attendance":student['Attendance']}},"StudentName":student['Name']},{merge:true});
+        }
+        try{
+            setData();
+            setFlag(flag+1);
+            console.log(flag);
+        }catch(err){
+            console.log("Firebase Insertion Error"+err);
+        }
+    });
+  }
 
   useEffect(() => {
     const getStudentName = async () => {
@@ -39,7 +56,7 @@ export default function TeacherDetails(props) {
     };
     getStudentName();
     console.log(studentDetails);
-  },[]);
+  },[flag]);
 
   const handleFileUpload = async (event) => {
     const file = event.target.files[0];
@@ -83,29 +100,32 @@ export default function TeacherDetails(props) {
       </button>
       <div id='excel-table'>
       {studentData.length > 0 ? (
-        <table className="student-table">
-          <thead>
-            <tr>
-              <th>USN</th>
-              <th>IA1</th>
-              <th>IA2</th>
-              <th>IA3</th>
-              <th>Attendance</th>
-            </tr>
-          </thead>
-          <tbody>
-            {studentData.map((student) => (
-              <tr key={student.usn}>
-                <td>{student.usn}</td>
-                <td>{student.ia1}</td>
-                <td>{student.ia2}</td>
-                <td>{student.ia3}</td>
-                <td>{student.attendance}</td>
+        <>
+          <table className="student-table">
+            <thead>
+              <tr>
+                <th>USN</th>
+                <th>IA1</th>
+                <th>IA2</th>
+                <th>IA3</th>
+                <th>Attendance</th>
               </tr>
-            ))}
-          </tbody>
-          <caption>Uploaded data</caption>
-        </table>
+            </thead>
+            <tbody>
+              {studentData.map((student) => (
+                <tr key={student.USN}>
+                  <td>{student.USN}</td>
+                  <td>{student.IA1}</td>
+                  <td>{student.IA2}</td>
+                  <td>{student.IA3}</td>
+                  <td>{student.Attendance}</td>
+                </tr>
+              ))}
+            </tbody>
+            <caption>Uploaded data</caption>
+          </table>
+          <button className="finalize-button" onClick={finalize}>Finalize</button>
+        </>
       ) : (
         <h1 className="excel">UPLOAD THE EXCEL FILE {CourseID}</h1>
       )}
@@ -120,15 +140,22 @@ export default function TeacherDetails(props) {
             <th>IA3</th>
             <th>Attendance</th>
           </tr>
-          {studentDetails.map(e => 
-            (<tr>
-              <td>{e["id"]}</td>
-              <td>{e["Marks"][CourseID]["IA1"]}</td>
-              <td>{e["Marks"][CourseID]["IA2"]}</td>
-              <td>{e["Marks"][CourseID]["IA3"]}</td>
-              <td>{e["Marks"][CourseID]["Attendance"]}</td>
-            </tr>)
-          )}
+          {studentDetails.map(e => {
+          if (e.Marks[CourseID]) {
+            const marksForCourse = e.Marks[CourseID];
+            return (
+              <tr key={e.id}>
+                <td>{e.id}</td>
+                <td>{marksForCourse.IA1}</td>
+                <td>{marksForCourse.IA2}</td>
+                <td>{marksForCourse.IA3}</td>
+                <td>{marksForCourse.Attendance}</td>
+              </tr>
+            );
+          } else {
+            return null;
+          }
+        })}
           <caption>Data since last update</caption>
         </table>
       ):(<p className="excel">NO DATA</p>)}

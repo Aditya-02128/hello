@@ -1,19 +1,24 @@
 import "./Teacher.css";
-import { useState } from "react";
 import { Button } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import { useCourseIDContext } from "./CourseIDContext";
 import { useCourseNameContext } from "./CourseNameContext";
+
 export default function Teacher() {
+
   const {CourseName, setCourseName}=useCourseNameContext();
   const {CourseID, setCourseID}=useCourseIDContext();
+  const navigate = useNavigate();
+  
   function home() {
     navigate("/");
   }
+
   function login() {
     navigate("/TeacherDetails");
   }
-  const navigate = useNavigate();
+
+  
   return (
     <div className="teacher-body">
       <div className="overlay1"></div>

@@ -22,7 +22,7 @@ h2 {
     background-image: url("https://img.freepik.com/free-vector/hand-drawn-back-school-background_23-2149464866.jpg?w=2000");
     background-position: center;
     background-size: cover;
-    background-repeat: no-repeat;
+    background-repeat: repeat-y;
     background-attachment: fixed;
 }
 
