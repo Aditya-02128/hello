@@ -88,12 +88,14 @@
 
 #excel-table {
     border: 1.25px dashed red;
-    margin-top: 190px;
+    margin-top: 0px;
     position: relative;
     left: -90%;
     padding-left: 11%;
     padding-right: 11%;
     align-items: center;
+    overflow: scroll;
+    height: 600px;
 }
 
 #excel-table caption {
@@ -113,6 +115,8 @@
     position: absolute;
     right: 170px;
     top: 100px;
+    overflow: scroll;
+    height: 600px;
 }
 
 #DB-table caption {
@@ -139,4 +143,8 @@
 
 .finalize-button:hover {
     background-color: rgb(17, 86, 139);
+}
+
+#DB-table ::-webkit-scrollbar {
+    display: none;
 }
