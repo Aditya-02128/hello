@@ -9,7 +9,7 @@ export default function Student() {
     navigate("/");
   }
   function login() {
-    navigate("/StudentDetails");
+    navigate(`/StudentDetails/${usn}`);
   }
   const navigate = useNavigate();
   return (

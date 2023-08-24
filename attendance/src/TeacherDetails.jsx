@@ -15,6 +15,7 @@ export default function TeacherDetails(props) {
   const {CourseID}=useCourseIDContext();
   const [studentDetails, setStudentDetails] = useState(null);
   const [flag,setFlag]=useState(0);
+  const [trackflag,settrackFlag]=useState(flag);
 
   function finalize(){
     studentData.map((student)=>{
@@ -38,6 +39,7 @@ export default function TeacherDetails(props) {
       const studentsCollection = collection(db, "students");
       try {
         const querySnapshot = await getDocs(studentsCollection);
+        console.log("fetched now")
         if (querySnapshot.size>0) {
           const studentData = querySnapshot.docs.map((doc) => ({
             ...doc.data(),
@@ -54,8 +56,11 @@ export default function TeacherDetails(props) {
         console.log(error);
       }
     };
-    getStudentName();
-    console.log(studentDetails);
+    
+      getStudentName();
+      console.log(studentDetails);
+      
+    
   },[flag]);
 
   const handleFileUpload = async (event) => {
