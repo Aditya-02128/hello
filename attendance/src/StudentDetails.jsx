@@ -14,15 +14,19 @@ export default function StudentDetails() {
   const navigate = useNavigate();
   const { usn } = useUsnContext();
   const [studentDetails, setStudentDetails] = useState(null);
-
+  const urlPath = window.location.pathname;
+  const parts = urlPath.split('/');
+  const tail = parts[parts.length - 1];
+  console.log(tail);
   useEffect(() => {
     const getStudentName = async () => {
-      const docRef = doc(db, "students", usn);
+      const docRef = doc(db, "students", tail);
       try {
         const docSnap = await getDoc(docRef);
         if (docSnap.exists()) {
           console.log("DocSnap data: ", docSnap.data());
           setStudentDetails(docSnap.data());
+          console.log("usn");
            // Update state with student details
         } else {
           console.log("Document does not exist");
@@ -44,7 +48,7 @@ console.log(studentDetails)
       {studentDetails!==null? (
         
         <table className="student-table">
-          <caption><h1>STUDENT DETAILS {studentDetails.StudentName}</h1><br></br></caption>
+          <caption><h1><p>STUDENT DETAILS</p><p>{studentDetails.StudentName}</p></h1><br></br></caption>
           <thead>
             <tr>
               <th>USN</th>
