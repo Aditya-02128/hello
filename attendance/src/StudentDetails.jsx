@@ -7,6 +7,10 @@ import { db } from './config/firebase';
 
 export default function StudentDetails() {
 
+  function printScreen(){
+    window.print(); 
+  };
+
   function home() {
     navigate("/");
   }
@@ -18,9 +22,15 @@ export default function StudentDetails() {
   const parts = urlPath.split('/');
   const tail = parts[parts.length - 1];
   console.log(tail);
+
+useEffect(()=>{
+  fetch("http://localhost:9000/students").then(res=>res.json()).then(data=>console.log(data)).catch(err=>console.log(err));
+},[])
+
   useEffect(() => {
     const getStudentName = async () => {
       const docRef = doc(db, "students", tail);
+      console.log("fetching")
       try {
         const docSnap = await getDoc(docRef);
         if (docSnap.exists()) {
@@ -43,7 +53,7 @@ export default function StudentDetails() {
 
 console.log(studentDetails)
   return (
-    <div className="student-details-container">
+    <div ig="printable" className="student-details-container">
       
       {studentDetails!==null? (
         
@@ -80,6 +90,9 @@ console.log(studentDetails)
       )}
       <button className="exit-button1" onClick={home}>
         Exit
+      </button>
+      <button className="Print-button" onClick={printScreen}>
+        Print
       </button>
     </div>
   );

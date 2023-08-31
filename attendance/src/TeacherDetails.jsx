@@ -15,7 +15,27 @@ export default function TeacherDetails(props) {
   const {CourseID}=useCourseIDContext();
   const [studentDetails, setStudentDetails] = useState(null);
   const [flag,setFlag]=useState(0);
-  const [trackflag,settrackFlag]=useState(flag);
+
+  function printdata(){
+    var toprint=document.getElementById("DB-table").innerHTML;
+    var a=window.open();
+    var styles=`.student-table {
+        width: 80%;border-collapse: collapse;margin-top: 20px;}
+      .student-table th,.student-table td {
+        padding: 10px;border: 3px solid #ddd;}
+      .student-table th {
+        background-color: #f2f2f2;font-weight: bold;}
+      .student-table td {
+        text-align: center;}`
+    a.document.write("<html><head><style>");
+    a.document.write(styles);
+    a.document.write("</style></head><body>");
+    a.document.write(toprint);
+    a.document.write("<script>var e=document.getElementById('print');e.remove();</script>");
+    a.document.write("</body></html>");
+    a.document.close();
+    a.print();
+  }
 
   function finalize(){
     studentData.map((student)=>{
@@ -137,6 +157,7 @@ export default function TeacherDetails(props) {
       </div>
       <div id="DB-table">
       {studentDetails!==null?(
+        <>
         <table className="student-table">
           <tr>
             <th>USN</th>
@@ -163,9 +184,11 @@ export default function TeacherDetails(props) {
         })}
           <caption>Data since last update</caption>
         </table>
+        <button id="print" className="Print-button" onClick={printdata}>
+        Print
+      </button></>
       ):(<p className="excel">NO DATA</p>)}
       </div>
-
     </div>
   );
 }

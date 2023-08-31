@@ -66,3 +66,21 @@ body {
 .exit-button1:hover {
     background-color: darkred;
 }
+
+.Print-button {
+    margin-top: 2%;
+    padding: 10px 20px;
+    background-color: red;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    position: relative;
+    transition: background-color 0.3s ease;
+}
+
+.Print-button:hover {
+    background-color: darkred;
+}
+
+;
