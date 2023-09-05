@@ -13,8 +13,33 @@ export default function TeacherDetails(props) {
   const { studentData, setStudentData } = useStudentDataContext();
   const {CourseName}=useCourseNameContext();
   const {CourseID}=useCourseIDContext();
-  const [studentDetails, setStudentDetails] = useState(null);
+  //const [studentDetails, setStudentDetails] = useState(null);
   const [flag,setFlag]=useState(0);
+  const [tempdata,settempdata]=useState(null);
+  const [flag1,setFlag1]=useState(0);
+
+  useEffect(()=>{
+    const getsql = async () => {
+      try {
+          const response = await fetch("http://localhost:81/php_files/init.php?courseid=" + CourseID, { method: "GET" });
+          const data = await response.json();
+          settempdata(data);
+          console.log(data);
+      } catch (error) {
+          console.error("Error fetching data:", error);
+      }
+  }
+    getsql();
+  },[flag1])
+
+  const finalizepage=()=>{
+    var e=document.getElementById('excel-table');
+    e.remove();
+    var dbt=document.getElementById('DB-table');
+    dbt.style.marginRight="25%";
+    dbt.style.marginLeft="25%";
+    setFlag1(flag1+1);
+  }
 
   function printdata(){
     var toprint=document.getElementById("DB-table").innerHTML;
@@ -37,6 +62,13 @@ export default function TeacherDetails(props) {
     a.print();
   }
 
+async function updatesql(){
+  const payload={"SSID":"6A","coursecode":CourseID,"data":studentData}
+    const res=await fetch("http://localhost:81/php_files/init.php",{method:"POST",headers:{"Content-Type": "application/json"},body:JSON.stringify(payload)})
+      .then(response=>response.json());
+    updateflag()
+}
+
   function finalize(){
     studentData.map((student)=>{
         const setData=async()=>{
@@ -45,15 +77,25 @@ export default function TeacherDetails(props) {
         }
         try{
             setData();
-            setFlag(flag+1);
+            setFlag1(flag1+1);
             console.log(flag);
         }catch(err){
             console.log("Firebase Insertion Error"+err);
         }
     });
+    //finalizepage();    //enable to remove excel page after finalization
+
+    updatesql();
+    setFlag1(flag1+1);
+    
   }
 
-  useEffect(() => {
+  function updateflag(){
+    setFlag1(flag1+1);
+  }
+
+
+  /*useEffect(() => {
     const getStudentName = async () => {
       
       const studentsCollection = collection(db, "students");
@@ -65,9 +107,7 @@ export default function TeacherDetails(props) {
             ...doc.data(),
             id: doc.id,
         } ));
-          console.log("DocSnap data: ", studentData);
           setStudentDetails(studentData);
-          console.log(studentDetails)
         } else {
           console.log("Document does not exist");
           setStudentDetails(null); // Clear student details
@@ -75,13 +115,10 @@ export default function TeacherDetails(props) {
       } catch (error) {
         console.log(error);
       }
-    };
-    
+    };  
       getStudentName();
-      console.log(studentDetails);
-      
-    
-  },[flag]);
+  
+  },[flag]);*/
 
   const handleFileUpload = async (event) => {
     const file = event.target.files[0];
@@ -95,9 +132,7 @@ export default function TeacherDetails(props) {
         const sheet = workbook.Sheets[sheetName];
         const parsedData = utils.sheet_to_json(sheet);
         console.log("Parsed Data:", parsedData);
-
         setStudentData(parsedData);
-        console.log("Student Data Context:", studentData);
       };
 
       reader.readAsBinaryString(file);
@@ -149,14 +184,14 @@ export default function TeacherDetails(props) {
             </tbody>
             <caption>Uploaded data</caption>
           </table>
-          <button className="finalize-button" onClick={finalize}>Finalize</button>
+          <button id="fin" className="finalize-button" onFocus={updateflag} onClick={finalize}>Finalize</button>
         </>
       ) : (
         <h1 className="excel">UPLOAD THE EXCEL FILE {CourseID}</h1>
       )}
       </div>
       <div id="DB-table">
-      {studentDetails!==null?(
+      {/*{studentDetails!==null?(
         <>
         <table className="student-table">
           <tr>
@@ -187,7 +222,34 @@ export default function TeacherDetails(props) {
         <button id="print" className="Print-button" onClick={printdata}>
         Print
       </button></>
+      ):(<p className="excel">NO DATA</p>)}*/}
+
+      {tempdata!==null?(
+        <>
+        <table className="student-table">
+          <tr>
+            <th>USN</th>
+            <th>IA1</th>
+            <th>IA2</th>
+            <th>IA3</th>
+            <th>Attendance</th>
+          </tr>
+          {tempdata.map((row) => (
+            <tr>
+              <td>{row.USN}</td>
+              <td>{row.IA1}</td>
+              <td>{row.IA2}</td>
+              <td>{row.IA3}</td>
+              <td>{row.Attendance}</td>
+            </tr>
+          ))}
+          <caption>Data since last update</caption>
+        </table>
+        <button id="print" className="Print-button" onClick={printdata}>
+        Print
+      </button></>
       ):(<p className="excel">NO DATA</p>)}
+
       </div>
     </div>
   );

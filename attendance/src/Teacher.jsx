@@ -29,7 +29,7 @@ export default function Teacher() {
             backgroundImage: "linear-gradient(50deg, #800080,transparent)",
           }}
         ></div>
-        <div className="title1">Enter Your FacultyID</div>
+        <div className="title1">Enter the course details</div>
 
         <div className="usn1">
           <label htmlFor="usn">CourseName</label>

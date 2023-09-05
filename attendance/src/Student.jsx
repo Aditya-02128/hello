@@ -5,16 +5,17 @@ import { useNavigate } from "react-router-dom";
 
 export default function Student() {
 
-
-  
   const { usn, setUsn } = useUsnContext();
   function home() {
     navigate("/");
   }
+
   function login() {
     navigate(`/StudentDetails/${usn}`);
   }
+
   const navigate = useNavigate();
+
   return (
     <div className="student-body">
       <div className="overlay1"></div>
