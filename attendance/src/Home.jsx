@@ -16,6 +16,13 @@ export default function Home() {
     navigate("/Teacher");
   };
 
+  const handleUploadMarksClick=()=>{
+    navigate("/UploadMarks");
+  }
+
+  const handleRetrieveMarksClick=()=>{
+    navigate("/RetrieveMarks");
+  }
   
   return (
     <div>
@@ -51,6 +58,8 @@ export default function Home() {
             >
               Student
             </Button>
+            <Button onClick={handleUploadMarksClick}>upload marks</Button>
+            
           </div>
         </form>
       </div>

@@ -12,9 +12,8 @@
 }
 
 .student-table {
-    width: 80%;
+    width: 100%;
     border-collapse: collapse;
-    margin-top: 20px;
 }
 
 .student-table th,
@@ -87,15 +86,18 @@
 }
 
 #excel-table {
-    border: 1.25px dashed red;
-    margin-top: 0px;
-    position: relative;
-    left: -90%;
-    padding-left: 11%;
-    padding-right: 11%;
+    border: 2px solid rgb(0, 0, 0);
+    top: 80px;
+    position: absolute;
+    width: 100%;
     align-items: center;
-    overflow: scroll;
-    height: 600px;
+    overflow-y: scroll;
+    overflow-x: scroll;
+    height: 80%;
+}
+
+#excel-table::-webkit-scrollbar {
+    display: none;
 }
 
 #excel-table caption {
@@ -129,7 +131,7 @@
 }
 
 .finalize-button {
-    padding: 10px 20px;
+    position: fixed;
     background-color: rgb(20, 150, 244);
     color: white;
     border: none;
@@ -137,8 +139,10 @@
     cursor: pointer;
     font-size: 17px;
     z-index: 3;
-    transition: background-color 0.3s ease;
+    padding: 0.5%;
     display: flex;
+    margin-top: -30px;
+    margin-left: 150px;
 }
 
 .finalize-button:hover {

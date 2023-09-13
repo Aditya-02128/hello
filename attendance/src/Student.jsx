@@ -11,7 +11,7 @@ export default function Student() {
   }
 
   function login() {
-    navigate(`/StudentDetails/${usn}`);
+    navigate(`/RetrieveMarks`);
   }
 
   const navigate = useNavigate();

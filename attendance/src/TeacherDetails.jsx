@@ -10,7 +10,7 @@ import { db } from './config/firebase';
 
 export default function TeacherDetails(props) {
   const navigate = useNavigate();
-  const { studentData, setStudentData } = useStudentDataContext();
+  const [ studentData, setStudentData ] = useState(null);
   const {CourseName}=useCourseNameContext();
   const {CourseID}=useCourseIDContext();
   //const [studentDetails, setStudentDetails] = useState(null);
@@ -63,10 +63,10 @@ export default function TeacherDetails(props) {
   }
 
 async function updatesql(){
-  const payload={"SSID":"6A","coursecode":CourseID,"data":studentData}
-    const res=await fetch("http://localhost:81/php_files/init.php",{method:"POST",headers:{"Content-Type": "application/json"},body:JSON.stringify(payload)})
-      .then(response=>response.json());
-    updateflag()
+  const payload={"IA":"IA1","data":studentData};
+  const response=await fetch("http://localhost:81/php_files/new.php",{method:"POST",headers:{"Content-Type": "application/json"},body:JSON.stringify(payload)})
+  console.log(response);
+  updateflag()
 }
 
   function finalize(){
@@ -133,6 +133,7 @@ async function updatesql(){
         const parsedData = utils.sheet_to_json(sheet);
         console.log("Parsed Data:", parsedData);
         setStudentData(parsedData);
+        console.log(parsedData);
       };
 
       reader.readAsBinaryString(file);
@@ -154,76 +155,40 @@ async function updatesql(){
           onChange={handleFileUpload}
           style={{ display: "none" }}
         />
+        <button id="fin" className="finalize-button" onClick={finalize}>Finalize</button>
       </label>
       <button className="exit-button" onClick={home}>
         Exit
       </button>
       <div id='excel-table'>
-      {studentData.length > 0 ? (
+      {studentData!==null?(
         <>
-          <table className="student-table">
+        
+        <table className="student-table">
             <thead>
-              <tr>
-                <th>USN</th>
-                <th>IA1</th>
-                <th>IA2</th>
-                <th>IA3</th>
-                <th>Attendance</th>
-              </tr>
-            </thead>
-            <tbody>
-              {studentData.map((student) => (
-                <tr key={student.USN}>
-                  <td>{student.USN}</td>
-                  <td>{student.IA1}</td>
-                  <td>{student.IA2}</td>
-                  <td>{student.IA3}</td>
-                  <td>{student.Attendance}</td>
+                <tr key="header">
+                    {Object.keys(studentData[0]).map((head)=>
+                        <td key={head.id}>{head}</td>
+                    )}
                 </tr>
-              ))}
-            </tbody>
-            <caption>Uploaded data</caption>
-          </table>
-          <button id="fin" className="finalize-button" onFocus={updateflag} onClick={finalize}>Finalize</button>
+            </thead>
+        <tbody>
+            {studentData.map((row)=>
+                <tr key={row.id}>
+                    {Object.keys(studentData[0]).map((head)=>
+                        <td key={head}>{row[head]}</td>
+                    )}
+                </tr>)}
+        </tbody>
+        </table>
+          
         </>
       ) : (
         <h1 className="excel">UPLOAD THE EXCEL FILE {CourseID}</h1>
       )}
       </div>
-      <div id="DB-table">
-      {/*{studentDetails!==null?(
-        <>
-        <table className="student-table">
-          <tr>
-            <th>USN</th>
-            <th>IA1</th>
-            <th>IA2</th>
-            <th>IA3</th>
-            <th>Attendance</th>
-          </tr>
-          {studentDetails.map(e => {
-          if (e.Marks[CourseID]) {
-            const marksForCourse = e.Marks[CourseID];
-            return (
-              <tr key={e.id}>
-                <td>{e.id}</td>
-                <td>{marksForCourse.IA1}</td>
-                <td>{marksForCourse.IA2}</td>
-                <td>{marksForCourse.IA3}</td>
-                <td>{marksForCourse.Attendance}</td>
-              </tr>
-            );
-          } else {
-            return null;
-          }
-        })}
-          <caption>Data since last update</caption>
-        </table>
-        <button id="print" className="Print-button" onClick={printdata}>
-        Print
-      </button></>
-      ):(<p className="excel">NO DATA</p>)}*/}
-
+      
+      {/*<div id="DB-table">
       {tempdata!==null?(
         <>
         <table className="student-table">
@@ -250,7 +215,7 @@ async function updatesql(){
       </button></>
       ):(<p className="excel">NO DATA</p>)}
 
-      </div>
+      </div>*/}
     </div>
   );
 }
